@@ -40,3 +40,12 @@ function openSaleChanceInfoDialog(title,id) {
      */
     window.parent.openTab(title+"_"+id,ctx+"/cusDevPlan/index?sid="+id);
 }
+
+
+function querySaleChancesByParams () {
+    $('#dg').datagrid('load', {
+        customerName: $('#customerName').val(),
+        devResult: $('#devResult').combobox('getValue'),
+        createDate: $('#time').datebox('getValue')
+    });
+}

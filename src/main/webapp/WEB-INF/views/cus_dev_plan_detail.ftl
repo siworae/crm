@@ -49,7 +49,7 @@
             <tr>
                 <td>指派给：</td>
                 <td>
-                    <input type="text" readonly="readonly" id="assignMan" name="assignMan" value="${(saleChance.trueName)!""}"  />
+                    <input type="text" readonly="readonly" id="assignMan" name="assignMan" value="${(saleChance.userName)!""}"  />
                 </td>
                 <td>    </td>
                 <td>指派时间：</td>

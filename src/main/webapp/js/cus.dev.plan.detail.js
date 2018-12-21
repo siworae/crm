@@ -14,3 +14,8 @@ function addRow () {
 function saveOrUpdateCusDevPlan() {
     $("#dg").edatagrid("saveRow");
 }
+function delCusDevPlan () {
+    deleteData('dg', ctx+'/cusDevPlan/delectCusDevPlanBatch', function () {
+        $("#dg").edatagrid("reload");
+    });
+}

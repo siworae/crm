@@ -109,4 +109,12 @@
     from t_cus_dev_plan
     WHERE is_valid=1 and sale_chance_id=#{sid}
   </select>
+
+  <update id="deleteBatch">
+    update t_cus_dev_plan set is_valid=0 where id in (
+      <foreach collection="array" item="item" separator=",">
+        #{item}
+      </foreach>
+    )
+  </update>
 </mapper>

@@ -2,7 +2,6 @@ package com.siworae.crm.service;
 
 import com.siworae.crm.base.BaseService;
 import com.siworae.crm.dao.SaleChanceMapper;
-import com.siworae.crm.dao.UserMapper;
 import com.siworae.crm.dto.SaleChanceDto;
 import com.siworae.crm.po.SaleChance;
 import com.siworae.crm.po.User;
@@ -50,6 +49,7 @@ public class SaleChenceService extends BaseService<SaleChanceDto> {
                 saleChance.setState(0);//未分配
             }else {
                 saleChance.setState(1);//已分配
+                saleChance.setAssignTime(new Date());// 分配时间
             }
             AssertUtil.isTrue(saleChanceMapper.save(saleChance) < 1,"增加失败");
         }else {

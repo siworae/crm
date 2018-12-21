@@ -1,6 +1,7 @@
 package com.siworae.crm.controller;
 
 import com.siworae.crm.base.BaseController;
+import com.siworae.crm.dto.SaleChanceDto;
 import com.siworae.crm.model.ResultInfo;
 import com.siworae.crm.po.CusDevPlan;
 import com.siworae.crm.po.SaleChance;
@@ -34,8 +35,8 @@ public class CusDevPlanController extends BaseController {
 
     @RequestMapping("index")
     public String index(Integer sid, Model model){
-        SaleChance saleChance = saleChanceService.queryById(sid);
-        model.addAttribute(saleChance);
+        SaleChanceDto saleChanceDto = saleChanceService.queryById(sid);
+        model.addAttribute("saleChance",saleChanceDto);
         return "cus_dev_plan_detail";
     }
 
@@ -54,6 +55,13 @@ public class CusDevPlanController extends BaseController {
     @ResponseBody
     public ResultInfo saveOrUpdate(CusDevPlan cusDevPlan){
         cusDevPlanService.saveOrUpdate(cusDevPlan);
+        return success("操作成功");
+    }
+
+    @RequestMapping("delectCusDevPlanBatch")
+    @ResponseBody
+    public ResultInfo delectCusDevPlanBatch(Integer[] ids){
+        cusDevPlanService.delectCusDevPlanBatch(ids);
         return success("操作成功");
     }
 }

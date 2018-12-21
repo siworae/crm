@@ -4,7 +4,6 @@ import com.siworae.crm.base.BaseService;
 import com.siworae.crm.dao.CusDevPlanMapper;
 import com.siworae.crm.po.CusDevPlan;
 import com.siworae.crm.utils.AssertUtil;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,5 +36,8 @@ public class CusDevPlanService extends BaseService<CusDevPlan> {
         }
     }
 
+    public void delectCusDevPlanBatch(Integer[] ids){
+        AssertUtil.isTrue(cusDevPlanMapper.deleteBatch(ids) < 1, "删除失败");
+    }
 
 }
