@@ -16,10 +16,10 @@
         <th field="overview" width="200" align="center">概要</th>
         <th field="linkMan" width="100" align="center">联系人</th>
         <th field="linkPhone" width="100" align="center">联系电话</th>
-        <th field="trueName" width="200" align="center" >指派人</th>
+        <th field="userName" width="100" align="center" >指派人</th>
         <th field="assignTime" width="200" align="center" >指派时间</th>
-        <th field="devResult" width="200" align="center" formatter="formatterDevResult">客户开发状态</th>
-        <th field="op" width="200" align="center" formatter="formatterOp" >操作</th>
+        <th field="devResult" width="100" align="center" formatter="formatterDevResult">客户开发状态</th>
+        <th field="op" width="100" align="center" formatter="formatterOp" >操作</th>
     </tr>
     </thead>
 </table>
