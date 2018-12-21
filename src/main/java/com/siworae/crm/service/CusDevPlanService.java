@@ -44,6 +44,7 @@ public class CusDevPlanService extends BaseService<CusDevPlan> {
              * 新增开发机会项时判断开发状态，如果是未开发则在新增开发机会项后将开发状态更改为开发中
              */
             Integer sid = cusDevPlan.getSaleChanceId();
+            //通过id查询saleChance表
             SaleChanceDto saleChanceDto = saleChanceMapper.queryById(sid);
             if (saleChanceDto.getDevResult() == 0){
                 //0=未开发，则将salechance表开发状态改为开发中
