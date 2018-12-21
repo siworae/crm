@@ -67,4 +67,12 @@ public class SaleChenceService extends BaseService<SaleChanceDto> {
         AssertUtil.isTrue(StringUtils.isBlank(saleChance.getLinkPhone()),"联系电话为空");
     }
 
+    /**
+     * 开发成功后更新DevResult字段状态
+     * @param sid
+     * @param devResult
+     */
+    public void updateSaleChanceDevResult(Integer sid, Integer devResult) {
+        AssertUtil.isTrue(saleChanceMapper.updateByParams(sid,devResult) <1 ,"操作失败");
+    }
 }

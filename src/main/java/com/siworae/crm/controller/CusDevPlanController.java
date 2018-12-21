@@ -4,7 +4,6 @@ import com.siworae.crm.base.BaseController;
 import com.siworae.crm.dto.SaleChanceDto;
 import com.siworae.crm.model.ResultInfo;
 import com.siworae.crm.po.CusDevPlan;
-import com.siworae.crm.po.SaleChance;
 import com.siworae.crm.query.CusDevPlanQuery;
 import com.siworae.crm.service.CusDevPlanService;
 import com.siworae.crm.service.SaleChenceService;
@@ -33,6 +32,12 @@ public class CusDevPlanController extends BaseController {
     @Autowired
     private CusDevPlanService cusDevPlanService;
 
+    /**
+     * 跳转到客户开发机会详情界面，并回显数据
+     * @param sid
+     * @param model
+     * @return
+     */
     @RequestMapping("index")
     public String index(Integer sid, Model model){
         SaleChanceDto saleChanceDto = saleChanceService.queryById(sid);
@@ -41,6 +46,13 @@ public class CusDevPlanController extends BaseController {
     }
 
 
+    /**
+     * 分页显示
+     * @param query
+     * @param rows
+     * @param page
+     * @return
+     */
     @RequestMapping("queryCusDevPlansByParams")
     @ResponseBody
     public Map<String, Object> queryCusDevPlansByParams(CusDevPlanQuery query,
@@ -51,6 +63,11 @@ public class CusDevPlanController extends BaseController {
         return cusDevPlanService.queryForPage(query);
     }
 
+    /**
+     * 保存和更新操作
+     * @param cusDevPlan
+     * @return
+     */
     @RequestMapping("saveOrUpdateCusDevPlan")
     @ResponseBody
     public ResultInfo saveOrUpdate(CusDevPlan cusDevPlan){
@@ -58,10 +75,28 @@ public class CusDevPlanController extends BaseController {
         return success("操作成功");
     }
 
+    /**
+     * 批量删除
+     * @param ids
+     * @return
+     */
     @RequestMapping("delectCusDevPlanBatch")
     @ResponseBody
     public ResultInfo delectCusDevPlanBatch(Integer[] ids){
         cusDevPlanService.delectCusDevPlanBatch(ids);
+        return success("操作成功");
+    }
+
+    /**
+     * 开发成功后更新状态
+     * @param sid
+     * @param devResult
+     * @return
+     */
+    @RequestMapping("updateSaleChanceDevResult")
+    @ResponseBody
+    public ResultInfo updateSaleChanceDevResult(Integer sid, Integer devResult){
+        saleChanceService.updateSaleChanceDevResult(sid,devResult);
         return success("操作成功");
     }
 }

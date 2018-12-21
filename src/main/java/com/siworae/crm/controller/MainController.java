@@ -22,6 +22,11 @@ public class MainController extends BaseController {
     @Autowired
     private UserService userService;
 
+    /**
+     * 打开首页
+     * @param request
+     * @return
+     */
     @RequestMapping("main")
     public String main(HttpServletRequest request){
         /** 从cookie中获取登陆用户id，通过id查询登陆用户信息 */

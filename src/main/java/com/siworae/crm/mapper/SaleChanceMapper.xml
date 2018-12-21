@@ -273,4 +273,8 @@
         </foreach>
         )
     </update>
+    
+    <update id="updateByParams" parameterType="int">
+        update t_sale_chance set dev_result = #{devResult} where id = #{sid}
+    </update>
 </mapper>

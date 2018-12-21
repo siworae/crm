@@ -29,6 +29,11 @@ public class SaleChanceController extends BaseController {
     @Autowired
     private SaleChenceService saleChenceService;
 
+    /**
+     * 打开营销机会管理和客户机会开发界面
+     * @param state
+     * @return
+     */
     @RequestMapping("index/{state}")
     public String SaleChance(@PathVariable Integer state){
         if (state == 0){
@@ -40,7 +45,14 @@ public class SaleChanceController extends BaseController {
         }
     }
 
-        @RequestMapping("querySaleChancesByParams")
+    /**
+     * 分页查询
+     * @param query
+     * @param page
+     * @param rows
+     * @return
+     */
+    @RequestMapping("querySaleChancesByParams")
     @ResponseBody
     public Map<String, Object> querySaleChancesByParams(SaleChanceQuery query,
                                                         @RequestParam(defaultValue = "1")Integer page,
@@ -50,6 +62,12 @@ public class SaleChanceController extends BaseController {
         return saleChenceService.queryForPage(query);
     }
 
+    /**
+     * 保存和更新操作
+     * @param saleChance
+     * @param request
+     * @return
+     */
     @RequestMapping("saveOrUpdateSaleChance")
     @ResponseBody
     public ResultInfo saveOrUpdateSaleChance(SaleChanceDto saleChance, HttpServletRequest request){
@@ -62,6 +80,11 @@ public class SaleChanceController extends BaseController {
         }
     }
 
+    /**
+     * 批量删除
+     * @param ids
+     * @return
+     */
     @RequestMapping("deleteSaleChanceBatch")
     @ResponseBody
     public ResultInfo deleteBatch(Integer[] ids){
