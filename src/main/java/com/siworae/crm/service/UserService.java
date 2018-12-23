@@ -1,9 +1,13 @@
 package com.siworae.crm.service;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.siworae.crm.base.BaseService;
 import com.siworae.crm.dao.UserMapper;
+import com.siworae.crm.dto.UserDto;
 import com.siworae.crm.model.UserInfo;
 import com.siworae.crm.po.User;
+import com.siworae.crm.query.UserQuery;
 import com.siworae.crm.utils.AssertUtil;
 import com.siworae.crm.utils.Md5Util;
 import com.siworae.crm.utils.UserIDBase64;
@@ -11,7 +15,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @program: crm
@@ -95,4 +102,62 @@ public class UserService extends BaseService<User> {
         return userMapper.queryCustomerManagers();
     }
 
+    /**
+     * 分页查询用户
+     * @param userQuery
+     * @return
+     */
+    public Map<String, Object> queryUserRoleForPage(UserQuery userQuery){
+        PageHelper.startPage(userQuery.getPageNum(),userQuery.getPageSize());
+        List<UserDto> entities=userMapper.queryUserRoleByParams(userQuery);
+        PageInfo<UserDto> pageInfo=new PageInfo<UserDto>(entities);
+        List<UserDto> list = pageInfo.getList();
+        //将后台查询到的角色id字符串转换成数组
+        //把roleInStr 变成 list 存入roleIds
+        for (UserDto userDao: list ) {
+            String roleIdStr = userDao.getRoleIdStr();  //1,2,3
+            if (!StringUtils.isBlank(roleIdStr)){
+                String[] split = roleIdStr.split(",");
+                List<Integer> roleIds = userDao.getRoleIds();
+                for (int i = 0; i < split.length; i++) {
+                    roleIds.add(Integer.valueOf(split[i]));
+                }
+            }
+        }
+        Map<String,Object> map=new HashMap<String,Object>();
+        map.put("total",pageInfo.getTotal());
+        map.put("rows",pageInfo.getList());
+        return map;
+    }
+
+    /**
+     * 更新和添加操作
+     * @param user
+     */
+    public void saveOrUpdateUser(User user){
+        Integer id = user.getId();
+
+        user.setUpdateDate(new Date());
+
+        //根据id判断操作是添加还是更新
+        if (null == id){
+            //增加操作
+            user.setCreateDate(new Date());
+            //设置默认密码123456
+            user.setUserPwd(Md5Util.encode("123456"));
+            user.setIsValid(1);
+            AssertUtil.isTrue(userMapper.save(user) < 1,"保存失败");
+        }else {
+            //更新操作
+            AssertUtil.isTrue(userMapper.update(user) < 1,"保存失败");
+        }
+    }
+
+    /**
+     * 批量删除用户操作
+     * @param ids
+     */
+    public void deleteUserBatch(Integer[] ids){
+        AssertUtil.isTrue(userMapper.deleteUserBatch(ids) < ids.length,"删除失败");
+    }
 }
