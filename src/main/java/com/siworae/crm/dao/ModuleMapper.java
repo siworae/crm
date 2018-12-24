@@ -12,4 +12,6 @@ import java.util.Map;
 public interface ModuleMapper extends BaseDao<Module> {
     List<Module> queryByParams(ModuleQuery moduleQuery);
     List<Map> queryByGrade(Integer id);
+    Module queryBymoduleName(String moduleName);
+    Module queryByOptValue(String optValue);
 }

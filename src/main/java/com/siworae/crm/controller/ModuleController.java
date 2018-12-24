@@ -1,6 +1,8 @@
 package com.siworae.crm.controller;
 
 import com.siworae.crm.base.BaseController;
+import com.siworae.crm.dao.ModuleMapper;
+import com.siworae.crm.model.ResultInfo;
 import com.siworae.crm.po.Module;
 import com.siworae.crm.query.ModuleQuery;
 import com.siworae.crm.service.ModuleService;
@@ -42,7 +44,7 @@ public class ModuleController extends BaseController {
     }
 
     /**
-     * 增加二级下拉框回显
+     * 增加弹框二级下拉框回显
      * @param grade
      * @return
      */
@@ -50,5 +52,17 @@ public class ModuleController extends BaseController {
     @ResponseBody
     public List<Map> queryByGrade(Integer grade){
         return moduleService.queryByGrade(grade);
+    }
+
+    /**
+     * 保存和更新
+     * @param module
+     * @return
+     */
+    @RequestMapping("saveOrUpdateModule")
+    @ResponseBody
+    public ResultInfo saveOrUpdateModule(Module module){
+        moduleService.saveOrUpdateModule(module);
+        return success("操作成功");
     }
 }

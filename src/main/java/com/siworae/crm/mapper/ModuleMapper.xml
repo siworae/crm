@@ -169,4 +169,12 @@
          module_name as moduleName
          from t_module where is_valid = 1 and grade = #{grade}
     </select>
+
+    <select id="queryBymoduleName" parameterType="string" resultMap="BaseResultMap">
+        select * from t_module where is_valid = 1 and module_name = #{moduleName}
+    </select>
+
+    <select id="queryByOptValue" parameterType="string" resultMap="BaseResultMap">
+        select * from t_module where is_valid = 1 and opt_value = #{optValue}
+    </select>
 </mapper>

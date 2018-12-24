@@ -53,6 +53,16 @@ $(function () {
     }
 })
 
+//关闭提示框
 function closeDlg () {
     closeDlgData('dlg');
 }
+
+//保存
+function saveOrUpdateModule() {
+    saveOrUpdateData('fm',ctx+'/module/saveOrUpdateModule','dlg',function () {
+        $('#dg').datagrid('reload');
+    })
+}
+
+//删除
