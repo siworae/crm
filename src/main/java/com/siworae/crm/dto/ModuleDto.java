@@ -12,7 +12,7 @@ public class ModuleDto {
     private Integer id;
     private Integer pId;
     private String name;
-    private Boolean checked;
+    private Boolean checked = false;
 
     public Integer getId() {
         return id;
