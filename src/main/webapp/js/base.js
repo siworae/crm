@@ -1,6 +1,4 @@
-/**
- * Created by lp on 2018/1/11.
- */
+
 /**
  * 基本crud 通用的js 代码
  */
@@ -107,3 +105,12 @@ function deleteData(dataGridId,deleteUrl,searchByParams) {
         }
     })
 }
+
+$(function () {
+    $('#dlg').dialog({
+        "onClose": function () {
+            // 触发表单清空
+            $('#fm').form('clear');
+        }
+    })
+})

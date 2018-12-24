@@ -4,9 +4,11 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.siworae.crm.base.BaseService;
 import com.siworae.crm.dao.UserMapper;
+import com.siworae.crm.dao.UserRoleMapper;
 import com.siworae.crm.dto.UserDto;
 import com.siworae.crm.model.UserInfo;
 import com.siworae.crm.po.User;
+import com.siworae.crm.po.UserRole;
 import com.siworae.crm.query.UserQuery;
 import com.siworae.crm.utils.AssertUtil;
 import com.siworae.crm.utils.Md5Util;
@@ -15,10 +17,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @program: crm
@@ -31,6 +30,8 @@ public class UserService extends BaseService<User> {
 
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private UserRoleMapper userRoleMapper;
     /**
      * @Description: 登陆操作
      * @param： userName
@@ -134,13 +135,15 @@ public class UserService extends BaseService<User> {
      * 更新和添加操作
      * @param user
      */
-    public void saveOrUpdateUser(User user){
-        Integer id = user.getId();
+    public void saveOrUpdateUser(User user,Integer[] roleIds){
+        Integer userId = user.getId();
 
         user.setUpdateDate(new Date());
 
         //根据id判断操作是添加还是更新
-        if (null == id){
+        if (null == userId){
+            //判断当前用户名是否重复
+            AssertUtil.isTrue(userMapper.queryUserByName(user.getUserName()) != null,"用户名已存在");
             //增加操作
             user.setCreateDate(new Date());
             //设置默认密码123456
@@ -149,8 +152,27 @@ public class UserService extends BaseService<User> {
             AssertUtil.isTrue(userMapper.save(user) < 1,"保存失败");
         }else {
             //更新操作
-            AssertUtil.isTrue(userMapper.update(user) < 1,"保存失败");
+            //判断用户是否修改了用户名
+            AssertUtil.isTrue(userMapper.queryById(userId).getUserName().equals(user.getUserName()),"用户名不能修改");
+            AssertUtil.isTrue(userMapper.update(user) < 1,"更新失败");
+            //判断当前用户是否存在角色
+            int total = userRoleMapper.queryCountByUserId(userId);
+            if (total > 0){
+                AssertUtil.isTrue(userRoleMapper.deleteByUserId(userId) < total,"删除用户角色失败");
+            }
         }
+
+        //增加用户角色
+        List<UserRole> list = new ArrayList<>();
+        for (Integer roleId:roleIds) {
+            UserRole userRole = new UserRole();
+            userRole.setUserId(userId);
+            userRole.setRoleId(roleId);
+            userRole.setCreateDate(new Date());
+            userRole.setUpdateDate(new Date());
+            list.add(userRole);
+        }
+        AssertUtil.isTrue(userRoleMapper.saveBatch(list) < list.size(),"增加用户角色失败");
     }
 
     /**
@@ -158,6 +180,18 @@ public class UserService extends BaseService<User> {
      * @param ids
      */
     public void deleteUserBatch(Integer[] ids){
+        AssertUtil.isTrue(null==ids||ids.length==0,"请选择待删除用户!");
+        //删除用户
         AssertUtil.isTrue(userMapper.deleteUserBatch(ids) < ids.length,"删除失败");
+
+        //删角色
+        for (Integer id:ids) {
+            //判断当前用户是否拥有角色
+            int total = userRoleMapper.queryCountByUserId(id);
+            if (total > 0){
+                AssertUtil.isTrue(userRoleMapper.deleteByUserId(id)<total,"删除角色失败");
+
+            }
+        }
     }
 }

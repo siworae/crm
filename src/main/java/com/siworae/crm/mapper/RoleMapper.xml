@@ -122,4 +122,35 @@
     </foreach>
     )
   </update>
+
+  <select id="queryByName" parameterType="string" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_role
+    where role_name = #{roleName}
+  </select>
+
+  <!-- 通过roleId查询当前角色所拥有的所有权限 -->
+  <select id="queryPermissionByRoleId" parameterType="int" resultType="ModuleDto">
+    SELECT
+      m.id,
+      m.module_name AS name,
+      m.parent_id AS pId,
+      p.module_id as checked
+      FROM
+      t_module AS m
+      LEFT JOIN(
+        SELECT
+        p.role_id,
+        p.module_id
+        FROM
+        t_permission AS p
+        WHERE
+        p.role_id = #{roleId}
+      ) as p on p.module_id=m.id
+      WHERE
+      m.is_valid = 1
+
+  </select>
+
 </mapper>

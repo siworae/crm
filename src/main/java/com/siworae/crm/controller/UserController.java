@@ -109,11 +109,16 @@ public class UserController extends BaseController {
      */
     @RequestMapping("saveOrUpdateUser")
     @ResponseBody
-    public ResultInfo saveOrUpdateUser(User user){
-        userService.saveOrUpdateUser(user);
+    public ResultInfo saveOrUpdateUser(User user,Integer[] roleIds){
+        userService.saveOrUpdateUser(user,roleIds);
         return success("操作成功");
     }
 
+    /**
+     * 删除用户
+     * @param ids
+     * @return
+     */
     @RequestMapping("deleteUserBatch")
     @ResponseBody
     public ResultInfo deleteBatchUser(Integer[] ids){

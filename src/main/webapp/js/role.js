@@ -36,55 +36,88 @@ function openRelationPermissionDialog() {
     var rows = $('#dg').datagrid("getSelections");
     //console.log(rows);
     if(rows.length==0){
-        $.messager.alert('来自Crm',"请选择一条记录进行授权");
+        $.messager.alert('来自Crm',"请选择一个角色进行授权");
         return;
     }
     if(rows.length>1){
-        $.messager.alert('来自Crm',"只能选择一条记录进行授权");
+        $.messager.alert('来自Crm',"只能选择一个角色进行授权");
         return;
     }
-    loadData();
+    loadData(rows[0].id);
 }
 
-//ztree初始化
-function loadData() {
+var treeObj;
+//zTree初始化
+function loadData(roleId) {
+    //设置roleId到隐藏域
+    $("#roleId").val(roleId);
 
-    var setting = {
-        check: {
-            enable: true,
-            chkboxType:  { "Y" : "ps", "N" : "ps" }
-        },
-        data: {
-            simpleData: {
-                enable: true
-            }
+    $.ajax({
+        url:ctx+'/role/queryPermissionByRoleId?roleId='+roleId,
+        type:'post',
+        success:function (data) {
+            // console.log(data);
+            //zTree 设置
+            var setting = {
+                check: {
+                    enable: true,
+                    chkboxType:  { "Y" : "ps", "N" : "ps" }
+                },
+                data: {
+                    simpleData: {
+                        enable: true
+                    }
+                },
+                callback: {
+                    onCheck: zTreeOnCheck
+                }
+            };
+            //zTree节点信息
+            var zNodes = data;
+            //初始化
+            treeObj = $.fn.zTree.init($("#treeDemo"), setting, zNodes);
+            //打开窗口
+            openAddOrUpdateDlg('permissionDlg', '角色授权');
         }
-    };
-
-    var zNodes =[
-        { id:1, pId:0, name:"随意勾选 1", checked:true},
-        { id:11, pId:1, name:"随意勾选 1-1"},
-        { id:111, pId:11, name:"随意勾选 1-1-1"},
-        { id:112, pId:11, name:"随意勾选 1-1-2"},
-        { id:12, pId:1, name:"随意勾选 1-2"},
-        { id:121, pId:12, name:"随意勾选 1-2-1"},
-        { id:122, pId:12, name:"随意勾选 1-2-2"},
-        { id:2, pId:0, name:"随意勾选 2", checked:true},
-        { id:21, pId:2, name:"随意勾选 2-1"},
-        { id:22, pId:2, name:"随意勾选 2-2"},
-        { id:221, pId:22, name:"随意勾选 2-2-1", checked:true},
-        { id:222, pId:22, name:"随意勾选 2-2-2"},
-        { id:23, pId:2, name:"随意勾选 2-3"}
-    ];
-
-    $(document).ready(function(){
-        $.fn.zTree.init($("#treeDemo"), setting, zNodes);
     });
+}
 
-    openAddOrUpdateDlg('permissionDlg', '角色授权');
+//zTree勾选的回调函数
+function zTreeOnCheck() {
+    var nodes = treeObj.getCheckedNodes(true);
+    console.log(nodes);
+    var moduleIds = "";
+    for (var i = 0; i < nodes.length; i++) {
+        moduleIds += "moduleIds="+nodes[i].id+"&";
+    }
+    $("#moduleIds").val(moduleIds);
 }
 
 //关闭权限窗口
 function closePermissionDlg() {
     closeDlgData('permissionDlg');
+}
+
+//授权
+function doGrant() {
+    var roleId = $("#roleId").val();
+    var moduleIds = $("#moduleIds").val();
+    $.ajax({
+        url:ctx+'/permission/doGrant?'+moduleIds,
+        type:'post',
+        data:{
+            roleId:roleId
+        },
+        success:function (data) {
+            if (data.code == 200){
+                $.messager.alert('来自Crm', data.msg, 'info', function () {
+                    closeDlgData('permissionDlg');
+                    // 刷新页面
+                    $('#dg').datagrid('reload');
+                });
+            }else{
+                $.messager.alert("来自crm",data.msg,"error");
+            }
+        }
+    });
 }

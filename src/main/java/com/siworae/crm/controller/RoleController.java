@@ -1,6 +1,8 @@
 package com.siworae.crm.controller;
 
 import com.siworae.crm.base.BaseController;
+import com.siworae.crm.dao.PermissionMapper;
+import com.siworae.crm.dto.ModuleDto;
 import com.siworae.crm.model.ResultInfo;
 import com.siworae.crm.po.Role;
 import com.siworae.crm.query.RoleQuery;
@@ -70,10 +72,27 @@ public class RoleController extends BaseController {
         return success("操作成功");
     }
 
+    /**
+     * 批量删除角色并删除角色所拥有的权限和拥有角色的用户中间表
+     * @param ids
+     * @return
+     */
     @RequestMapping("deleteRole")
     @ResponseBody
     public ResultInfo deleteRole(Integer[] ids){
-        roleService.deleteBatch(ids);
+        roleService.deleteRole(ids);
         return success("删除成功");
     }
+
+    /**
+     * 根据角色id查询角色所拥有的全部权限
+     * @param roleId
+     * @return
+     */
+    @RequestMapping("queryPermissionByRoleId")
+    @ResponseBody
+    public List<ModuleDto> queryPermissionByRoleId(Integer roleId){
+        return roleService.queryPermissionByRoleId(roleId);
+    }
+
 }
