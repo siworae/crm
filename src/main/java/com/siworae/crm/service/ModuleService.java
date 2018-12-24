@@ -6,6 +6,9 @@ import com.siworae.crm.po.Module;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Map;
+
 
 /**
  * @program: crm
@@ -18,5 +21,9 @@ public class ModuleService extends BaseService<Module> {
 
     @Autowired
     private ModuleMapper moduleMapper;
+
+    public List<Map> queryByGrade(Integer grade){
+        return moduleMapper.queryByGrade(grade);
+    }
 
 }

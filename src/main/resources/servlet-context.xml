@@ -16,7 +16,7 @@
         http://www.springframework.org/schema/tx/spring-tx.xsd">
     <!-- 扫描com.siworae.crm 下包 -->
     <context:component-scan base-package="com.siworae.crm.controller" />
-    <aop:aspectj-autoproxy/>
+    <aop:aspectj-autoproxy/><!-- aop -->
 
     <bean id="freemarkerConfig"
           class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">

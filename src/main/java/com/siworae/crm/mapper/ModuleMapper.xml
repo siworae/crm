@@ -152,14 +152,21 @@
                 and module_name like concat("%",#{moduleName},"%")
             </if>
             <if test="optValue != null and optValue !=''">
-                and opt_value like concat("%",#{optValue},"%")
+                and opt_value = #{optValue}
             </if>
-            <if test="moduleName != null and moduleName !=''">
+            <if test="parentId != null and parentId !=''">
                 and parent_id = #{parentId}
             </if>
             <if test="grade != null and grade !=''">
                 and grade = #{grade}
             </if>
         </where>
+    </select>
+    
+    <select id="queryByGrade" parameterType="int" resultType="map">
+        select
+         id,
+         module_name as moduleName
+         from t_module where is_valid = 1 and grade = #{grade}
     </select>
 </mapper>

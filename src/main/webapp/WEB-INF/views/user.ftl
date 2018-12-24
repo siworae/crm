@@ -41,7 +41,7 @@
         邮箱:<input type="text" id="email02" name="email"  class="easyui-validatebox" required="required"/><br/><br/>
         手机号:<input type="text" name="phone"  id="phone02" class="easyui-validatebox" required="required"/><br/><br/>
         角色:<input class="easyui-combobox" id="roleIds" name="roleIds"
-                   valueField="id" textField="roleName"
+                   valueField="id" textField="roleName" panelHeight="200"
                    url="${ctx}/role/queryAllRoles" panelHeight="auto" multiple="true"  /><br/><br/>
         <input name="id" id="id" type="hidden"/>
     </form>

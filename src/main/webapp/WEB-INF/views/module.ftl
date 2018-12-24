@@ -13,7 +13,7 @@
         <th field="id" width="50" align="center">编号</th>
         <th field="moduleName" width="150" align="center" >模块名称</th>
         <th field="parentId" width="50" align="center" >上级id</th>
-        <th field="grade" width="50" align="center"  formatter="">层级</th>
+        <th field="grade" width="100" align="center"  formatter="formateGrade">层级</th>
         <th field="optValue" width="100" align="center" >权限码</th>
         <th field="orders" width="50" align="center" >排序</th>
         <th field="createDate" width="150" align="center" >创建时间</th>

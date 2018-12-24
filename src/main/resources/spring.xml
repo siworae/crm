@@ -20,8 +20,6 @@
     <!-- 加载properties 配置文件 -->
     <context:property-placeholder location="classpath:db.properties" />
 
-    <aop:aspectj-autoproxy /><!-- aop -->
-
     <!-- 配置c3p0 数据源 -->
     <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
         <property name="driverClass" value="${jdbc.driver}"></property>
