@@ -181,4 +181,14 @@
         )
     </update>
 
+    <select id="queryAllaclVauleByUserId" parameterType="int" resultType="string">
+        SELECT
+            DISTINCT p.acl_value AS aclValue
+            FROM
+            t_user_role AS ur
+            INNER JOIN t_permission AS p ON ur.role_id = p.role_id
+            WHERE
+            ur.user_id = #{userId}
+    </select>
+
 </mapper>

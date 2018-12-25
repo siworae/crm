@@ -1,7 +1,9 @@
 package com.siworae.crm.service;
 
 import com.siworae.crm.base.BaseService;
+import com.siworae.crm.dao.ModuleMapper;
 import com.siworae.crm.dao.PermissionMapper;
+import com.siworae.crm.po.Module;
 import com.siworae.crm.po.Permission;
 import com.siworae.crm.utils.AssertUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,9 @@ public class PermissionService extends BaseService<Permission> {
 
     @Autowired
     private PermissionMapper permissionMapper;
+    @Autowired
+    private ModuleMapper moduleMapper;
+
     /**
      * 角色授权
      * @param roleId
@@ -43,6 +48,10 @@ public class PermissionService extends BaseService<Permission> {
                 permission.setCreateDate(new Date());
                 permission.setUpdateDate(new Date());
                 permission.setModuleId(moduleId);
+                //根据模块id获取模块权限码
+                Module module = moduleMapper.queryById(moduleId);
+                permission.setAclValue(module.getOptValue());
+
                 list.add(permission);
             }
             permissionMapper.saveBatch(list);

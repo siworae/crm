@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * @program: crm
@@ -21,6 +22,7 @@ public class MainController extends BaseController {
 
     @Autowired
     private UserService userService;
+    
 
     /**
      * 打开首页
@@ -33,6 +35,11 @@ public class MainController extends BaseController {
         Integer userId = LoginUserUtil.releaseUserIdFromCookie(request);
         User user = userService.queryById(userId);
         request.setAttribute("user",user);
+
+        List<String> permissions = userService.queryAllaclVauleByUserId(userId);
+        System.out.println(permissions.toString());
+        request.getSession().setAttribute("permissions",permissions);
+
         return "main";
     }
 }

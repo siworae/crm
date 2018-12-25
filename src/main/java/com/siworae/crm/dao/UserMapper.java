@@ -1,6 +1,7 @@
 package com.siworae.crm.dao;
 
 import com.siworae.crm.base.BaseDao;
+import com.siworae.crm.dto.UserDto;
 import com.siworae.crm.po.User;
 import com.siworae.crm.query.UserQuery;
 
@@ -12,4 +13,5 @@ public interface UserMapper extends BaseDao<User> {
     public List<Map> queryCustomerManagers();
     public List queryUserRoleByParams(UserQuery userQuery);
     public Integer deleteUserBatch(Integer[] ids);
+    public List<String> queryAllaclVauleByUserId(Integer userId);
 }

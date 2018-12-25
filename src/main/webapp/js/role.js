@@ -67,10 +67,11 @@ function loadData(roleId) {
                     simpleData: {
                         enable: true
                     }
-                },
+                }
+/*                ,
                 callback: {
                     onCheck: zTreeOnCheck
-                }
+                }*/
             };
             //zTree节点信息
             var zNodes = data;
@@ -100,6 +101,7 @@ function closePermissionDlg() {
 
 //授权
 function doGrant() {
+    zTreeOnCheck();
     var roleId = $("#roleId").val();
     var moduleIds = $("#moduleIds").val();
     $.ajax({

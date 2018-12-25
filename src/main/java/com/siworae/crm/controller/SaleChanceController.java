@@ -1,5 +1,6 @@
 package com.siworae.crm.controller;
 
+import com.siworae.crm.annations.RequestPermission;
 import com.siworae.crm.base.BaseController;
 import com.siworae.crm.dto.SaleChanceDto;
 import com.siworae.crm.model.ResultInfo;
@@ -52,6 +53,7 @@ public class SaleChanceController extends BaseController {
      * @param rows
      * @return
      */
+    @RequestPermission(aclValue = "101001")
     @RequestMapping("querySaleChancesByParams")
     @ResponseBody
     public Map<String, Object> querySaleChancesByParams(SaleChanceQuery query,

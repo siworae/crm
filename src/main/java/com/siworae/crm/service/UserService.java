@@ -195,4 +195,13 @@ public class UserService extends BaseService<User> {
             }
         }
     }
+
+    /**
+     * 查询当前用户所拥有的权限码
+     * @param userId
+     * @return
+     */
+    public List<String> queryAllaclVauleByUserId(Integer userId){
+        return userMapper.queryAllaclVauleByUserId(userId);
+    }
 }
