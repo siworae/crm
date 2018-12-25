@@ -99,4 +99,8 @@
       (#{item.roleId}, #{item.moduleId}, #{item.aclValue}, #{item.createDate}, #{item.updateDate})
     </foreach>
   </insert>
+
+  <select id="queryBymoduleId" parameterType="int" resultMap="BaseResultMap">
+    select * from t_permission where module_id=#{moduleId}
+  </select>
 </mapper>

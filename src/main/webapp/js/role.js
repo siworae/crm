@@ -85,7 +85,7 @@ function loadData(roleId) {
 //zTree勾选的回调函数
 function zTreeOnCheck() {
     var nodes = treeObj.getCheckedNodes(true);
-    console.log(nodes);
+    // console.log(nodes);
     var moduleIds = "";
     for (var i = 0; i < nodes.length; i++) {
         moduleIds += "moduleIds="+nodes[i].id+"&";

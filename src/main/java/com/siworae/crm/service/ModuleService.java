@@ -2,6 +2,7 @@ package com.siworae.crm.service;
 
 import com.siworae.crm.base.BaseService;
 import com.siworae.crm.dao.ModuleMapper;
+import com.siworae.crm.dao.PermissionMapper;
 import com.siworae.crm.po.Module;
 import com.siworae.crm.utils.AssertUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -24,6 +25,8 @@ public class ModuleService extends BaseService<Module> {
 
     @Autowired
     private ModuleMapper moduleMapper;
+    @Autowired
+    private PermissionMapper permissionMapper;
 
     /**
      * 增加弹框二级下拉框回显
@@ -101,6 +104,34 @@ public class ModuleService extends BaseService<Module> {
         }else {
             module.setParentId(null);
         }
+    }
+
+    /**
+     * 删除模块
+     * @param ids
+     */
+    public void deleteModuleById(Integer[] ids){
+        for (Integer id:ids) {
+            /**删除当前模块*/
+            AssertUtil.isTrue(null != permissionMapper.queryBymoduleId(id),"模块Id:"+id+"已被使用，无法删除");
+            AssertUtil.isTrue(moduleMapper.deleteModuleById(id) < 1,"删除失败");
+
+            /**删除下级模块*/
+            Module module = moduleMapper.queryById(id);
+            if (module.getGrade()!=2){
+                //不为第三级则需要删除下级菜单
+                String optValue = module.getOptValue();
+                List<Module> modules = moduleMapper.queryLikeOptValue(optValue);
+//                System.out.println(modules);
+                if (modules.size() !=0 && modules != null){
+                    for (Module m:modules) {
+                        AssertUtil.isTrue(null != permissionMapper.queryBymoduleId(m.getId()),"模块Id:"+m.getId()+"已被使用，无法删除");
+                        AssertUtil.isTrue(moduleMapper.deleteModuleLikeOptValue(m.getOptValue())<1,"删除下级菜单失败");
+                    }
+                }
+            }
+        }
+
     }
 
 }

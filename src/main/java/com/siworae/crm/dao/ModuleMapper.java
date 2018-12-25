@@ -14,4 +14,7 @@ public interface ModuleMapper extends BaseDao<Module> {
     List<Map> queryByGrade(Integer id);
     Module queryBymoduleName(String moduleName);
     Module queryByOptValue(String optValue);
+    List<Module> queryLikeOptValue(String optValue);
+    Integer deleteModuleById(Integer id);
+    Integer deleteModuleLikeOptValue(String optValue);
 }

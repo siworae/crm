@@ -153,7 +153,8 @@ public class UserService extends BaseService<User> {
         }else {
             //更新操作
             //判断用户是否修改了用户名
-            AssertUtil.isTrue(userMapper.queryById(userId).getUserName().equals(user.getUserName()),"用户名不能修改");
+            String userName = userMapper.queryById(userId).getUserName();
+            AssertUtil.isTrue(!userName.equals(user.getUserName()),"用户名不能修改");
             AssertUtil.isTrue(userMapper.update(user) < 1,"更新失败");
             //判断当前用户是否存在角色
             int total = userRoleMapper.queryCountByUserId(userId);

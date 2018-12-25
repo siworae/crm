@@ -5,13 +5,11 @@ import com.siworae.crm.dao.PermissionMapper;
 import com.siworae.crm.dao.RoleMapper;
 import com.siworae.crm.dao.UserRoleMapper;
 import com.siworae.crm.dto.ModuleDto;
-import com.siworae.crm.po.Permission;
 import com.siworae.crm.po.Role;
 import com.siworae.crm.utils.AssertUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;

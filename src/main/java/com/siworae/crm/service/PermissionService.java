@@ -28,7 +28,6 @@ public class PermissionService extends BaseService<Permission> {
      * @param moduleIds
      */
     public void doGrant(Integer roleId,Integer[] moduleIds){
-        AssertUtil.isTrue(null==moduleIds||moduleIds.length==0,"请选择权限!");
         AssertUtil.isTrue(null==roleId||roleId==0,"请选择角色!");
         //新增权限时先删除所有权限
         //判断当前角色是否有权限，如果有则删除
@@ -36,15 +35,17 @@ public class PermissionService extends BaseService<Permission> {
         if (total >0){
             AssertUtil.isTrue(permissionMapper.deleteByRoleId(roleId) <total , "角色权限删除失败");
         }
-        List<Permission> list = new ArrayList<>();
-        for (Integer moduleId:moduleIds) {
-            Permission permission = new Permission();
-            permission.setRoleId(roleId);
-            permission.setCreateDate(new Date());
-            permission.setUpdateDate(new Date());
-            permission.setModuleId(moduleId);
-            list.add(permission);
+        if (null != moduleIds && moduleIds.length != 0){
+            List<Permission> list = new ArrayList<>();
+            for (Integer moduleId:moduleIds) {
+                Permission permission = new Permission();
+                permission.setRoleId(roleId);
+                permission.setCreateDate(new Date());
+                permission.setUpdateDate(new Date());
+                permission.setModuleId(moduleId);
+                list.add(permission);
+            }
+            permissionMapper.saveBatch(list);
         }
-        permissionMapper.saveBatch(list);
     }
 }

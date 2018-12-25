@@ -1,7 +1,6 @@
 package com.siworae.crm.controller;
 
 import com.siworae.crm.base.BaseController;
-import com.siworae.crm.dao.ModuleMapper;
 import com.siworae.crm.model.ResultInfo;
 import com.siworae.crm.po.Module;
 import com.siworae.crm.query.ModuleQuery;
@@ -63,6 +62,18 @@ public class ModuleController extends BaseController {
     @ResponseBody
     public ResultInfo saveOrUpdateModule(Module module){
         moduleService.saveOrUpdateModule(module);
+        return success("操作成功");
+    }
+
+    /**
+     * 删除模块
+     * @param ids
+     * @return
+     */
+    @RequestMapping("deleteModule")
+    @ResponseBody
+    public ResultInfo deleteModuleById(Integer[] ids){
+        moduleService.deleteModuleById(ids);
         return success("操作成功");
     }
 }

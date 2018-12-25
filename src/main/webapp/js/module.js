@@ -66,3 +66,8 @@ function saveOrUpdateModule() {
 }
 
 //删除
+function deleteModule () {
+    deleteData('dg',ctx+'/module/deleteModule',function () {
+        $("#dg").datagrid('reload');
+    })
+}

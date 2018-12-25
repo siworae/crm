@@ -177,4 +177,16 @@
     <select id="queryByOptValue" parameterType="string" resultMap="BaseResultMap">
         select * from t_module where is_valid = 1 and opt_value = #{optValue}
     </select>
+
+    <select id="queryLikeOptValue" parameterType="string" resultMap="BaseResultMap">
+        select * from t_module where is_valid = 1 and opt_value like concat(#{optValue},"%")
+    </select>
+
+    <update id="deleteModuleById" parameterType="int">
+        update t_module set is_valid=0 where id=#{id}
+    </update>
+
+    <update id="deleteModuleLikeOptValue" parameterType="string">
+        update t_module set is_valid=0 where opt_value like concat(#{optValue},"%")
+    </update>
 </mapper>
